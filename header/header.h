@@ -1,0 +1,10 @@
+#pragma once
+
+#define MAX_FILESIZE 2048
+
+enum exit_codes {
+    EXECUTION_SUCCESS,
+    MEMORY_OUT_OF_BOUNDS,
+    UNKNOWN_INSTRUCTION,
+    UNMATCHED_PARENTHESIS,
+};
