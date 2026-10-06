@@ -2,13 +2,13 @@
 
 #define INSTRUCTION_SET_SIZE 8
 
-const char characters[INSTRUCTION_SET_SIZE] = {'+', '-', '<', '>', '.', ',', '[', ']'};
+constexpr char instruction_set[INSTRUCTION_SET_SIZE] = {'+', '-', '<', '>', '.', ',', '[', ']'};
 
 bool is_instruction(const char character) {
 
     bool flag = false;
 
-    for (const char instruction : characters) {
+    for (const char instruction : instruction_set) {
         if (character == instruction) {
             flag = true;
             break;

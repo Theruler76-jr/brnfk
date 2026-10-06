@@ -6,49 +6,56 @@
 
 
 int main() {
-
     //const char raw[MAX_FILESIZE] = ">++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+.";
-    const char raw[MAX_FILESIZE] = "+++++++++++++++++++++++++++++++++++++++++++++++++..,+.";
-    char src[MAX_FILESIZE];
+    //const char raw[MAX_FILESIZE] = "+++++++++++++++++++++++++++++++++++++++++++++++++..,+.";
+    //const char raw[MAX_FILESIZE] = "++>+++>-.>.--.<<+";
+    //const char raw[MAX_FILESIZE] = "+[+]";
+    const char raw[MAX_FILESIZE] = ",+.,+.";
+    char src[MAX_FILESIZE] = {};
 
-    unsigned char memory[256] = {};
-    int ptr_data = 0;
-    int ptr_instr = 0;
+    Machine machine;
 
     process(raw, src);
 
-    const int exit_code = interpret(src, memory, &ptr_data, &ptr_instr);
-    std::cout << std::endl << std::endl;
+    const int exit_code = interpret(src, &machine);
+
+    std::cout << "\n\n";
 
     switch (exit_code) {
 
         case EXECUTION_SUCCESS:
-            std::cout << "Success" << std::endl;
+            std::cout << "Execution success\n";
             break;
 
         case MEMORY_OUT_OF_BOUNDS:
-            std::cout << "Attempted shift operation out of bounds at memory location " << ptr_data << std::endl;
+            std::cout << "Attempted shift operation out of bounds at memory location " << machine.ptr_data << "\n";
             break;
 
-        case UNMATCHED_PARENTHESIS:
-            std::cout << "Unmatched parenthesis at instruction " << ptr_instr << std::endl;
+        case UNMATCHED_BRACKET:
+            std::cout << "Unmatched bracket at instruction " << machine.ptr_instr << "\n";
             break;
 
         case UNKNOWN_INSTRUCTION:
-            std::cout << "Unknown instruction " << src[ptr_instr] << std::endl;
+            std::cout << "Unknown instruction " << src[machine.ptr_instr] << "\n";
             break;
 
         default:
-            std::cout << "Unknown exit code " << exit_code << std::endl;
+            std::cout << "Unknown exit code " << exit_code << "\n";
 
     }
 
-    for (const int i : memory) {
-        std::cout << i << ", ";
+    std::cout << "\n";
+    std::cout << "Instruction pointer: " << machine.ptr_instr << "\n";
+    std::cout << "Data pointer: " << machine.ptr_data << "\n";
+    std::cout << "\n";
+
+    std::cout << "Memory view:\n";
+
+    for (const int i : machine.memory) {
+        std::cout << i << " ";
     }
 
     getchar();
 
     return 0;
-
 }

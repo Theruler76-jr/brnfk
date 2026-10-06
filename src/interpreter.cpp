@@ -5,49 +5,50 @@
 
 #include "../header/header.h"
 
-int interpret(const char code[], unsigned char memory[], int *ptr_data, int *ptr_instr) {
+
+int interpret(const char code[], Machine *machine) {
 
     int stack[256] = {};
     int ptr_stack = -1;
 
-    while (code[*ptr_instr] != '\0') {
+    while (code[machine->ptr_instr] != '\0') {
 
-        switch (code[*ptr_instr]) {
+        switch (code[machine->ptr_instr]) {
 
         case '+':
-            memory[*ptr_data]++;
+            machine->memory[machine->ptr_data]++;
             break;
         case '-':
-            memory[*ptr_data]--;
+            machine->memory[machine->ptr_data]--;
             break;
 
         case '<':
-            if (*ptr_data == 0) return MEMORY_OUT_OF_BOUNDS;
-            (*ptr_data)--;
+            if (machine->ptr_data == 0) return MEMORY_OUT_OF_BOUNDS;
+            machine->ptr_data--;
             break;
         case '>':
-            if (*ptr_data == 255) return MEMORY_OUT_OF_BOUNDS;
-            (*ptr_data)++;
+            if (machine->ptr_data == 255) return MEMORY_OUT_OF_BOUNDS;
+            machine->ptr_data++;
             break;
 
         case '.':
-            std::cout << memory[*ptr_data];
+            std::cout << machine->memory[machine->ptr_data];
             break;
         case ',':
-            memory[*ptr_data] = getch();
+            machine->memory[machine->ptr_data] = getch();
             break;
 
         case '[':
             ptr_stack++;
-            stack[ptr_stack] = *ptr_instr;
+            stack[ptr_stack] = machine->ptr_instr;
             break;
         case ']':
-            if (ptr_stack == -1) return UNMATCHED_PARENTHESIS;
+            if (ptr_stack == -1) return UNMATCHED_BRACKET;
 
-            if (memory[*ptr_data] == 0) {
+            if (machine->memory[machine->ptr_data] == 0) {
                 ptr_stack--;
             } else {
-                *ptr_instr = stack[ptr_stack];
+                machine->ptr_instr = stack[ptr_stack];
             }
 
             break;
@@ -57,10 +58,9 @@ int interpret(const char code[], unsigned char memory[], int *ptr_data, int *ptr
 
         }
 
-        (*ptr_instr)++;
+        machine->ptr_instr++;
 
     }
 
     return EXECUTION_SUCCESS;
-
 }
