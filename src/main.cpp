@@ -28,28 +28,9 @@ int main() {
 
     std::cout << "\n\n";
 
-    int exit_code = interpret(src, &machine, jump_table);
+    interpret(src, &machine, jump_table);
 
     std::cout << "\n\n";
-
-    switch (exit_code) {
-
-        case EXECUTION_SUCCESS:
-            std::cout << "Execution success\n";
-            break;
-
-        case MEMORY_OUT_OF_BOUNDS:
-            std::cout << "Attempted shift operation out of bounds at memory location " << machine.ptr_data << "\n";
-            break;
-
-        case UNKNOWN_INSTRUCTION:
-            std::cout << "Unknown instruction " << src[machine.ptr_instr] << "\n";
-            break;
-
-        default:
-            std::cout << "Unknown exit code " << exit_code << "\n";
-
-    }
 
     std::cout << "\n";
     std::cout << "Instruction pointer: " << machine.ptr_instr << "\n";

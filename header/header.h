@@ -3,6 +3,7 @@
 #define MAX_FILESIZE 2048
 #define MEMORY_SIZE 1024 //4096 //16384
 
+
 enum exit_codes {
     EXECUTION_SUCCESS,
     MEMORY_OUT_OF_BOUNDS,

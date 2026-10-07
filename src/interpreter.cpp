@@ -4,9 +4,10 @@
 #include <conio.h>
 
 #include "../header/header.h"
+#include "../header/error_handling.h"
 
 
-int interpret(const char code[], Machine *machine, const int jump_table[]) {
+void interpret(const char code[], Machine *machine, const int jump_table[]) {
 
     while (code[machine->ptr_instr] != '\0') {
 
@@ -20,11 +21,11 @@ int interpret(const char code[], Machine *machine, const int jump_table[]) {
             break;
 
         case '<':
-            if (machine->ptr_data == 0) return MEMORY_OUT_OF_BOUNDS;
+            if (machine->ptr_data == 0) throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
             machine->ptr_data--;
             break;
         case '>':
-            if (machine->ptr_data == MEMORY_SIZE) return MEMORY_OUT_OF_BOUNDS;
+            if (machine->ptr_data == MEMORY_SIZE) throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
             machine->ptr_data++;
             break;
 
@@ -45,13 +46,11 @@ int interpret(const char code[], Machine *machine, const int jump_table[]) {
             break;
 
         default:
-            return UNKNOWN_INSTRUCTION;
+            throw_interpreter(UNKNOWN_INSTRUCTION, code, machine);;
 
         }
 
         machine->ptr_instr++;
 
     }
-
-    return EXECUTION_SUCCESS;
 }

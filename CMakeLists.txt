@@ -9,4 +9,6 @@ add_executable(brnfk src/main.cpp
         src/interpreter.cpp
         header/interpreter.h
         src/preprocessor.cpp
-        header/preprocessor.h)
+        header/preprocessor.h
+        src/error_handling.cpp
+        header/error_handling.h)
