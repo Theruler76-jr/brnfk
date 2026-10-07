@@ -2,4 +2,4 @@
 
 #include "header.h"
 
-int interpret(const char code[], Machine *machine);
+int interpret(const char code[], Machine *machine, const int jump_table[]);

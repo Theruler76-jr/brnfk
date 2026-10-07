@@ -10,14 +10,25 @@ int main() {
     //const char raw[MAX_FILESIZE] = "+++++++++++++++++++++++++++++++++++++++++++++++++..,+.";
     //const char raw[MAX_FILESIZE] = "++>+++>-.>.--.<<+";
     //const char raw[MAX_FILESIZE] = "+[+]";
-    const char raw[MAX_FILESIZE] = ",+.,+.";
+    //const char raw[MAX_FILESIZE] = ",+.,+.";
+    //const char raw[MAX_FILESIZE] = "+[++]+";
+    const char raw[MAX_FILESIZE] = "-[->+++++++++>+++>->>>>->>->>>>->>->>>>->+++>>->+>++>>+>->++>>+>->++>>+>->++>+++++++++>+>[>>>]<[>------->-------->->-->>]>>-[<-]<++[[[>>]+++<[>]++[<]<-]>-<<++]>+>[+>]<<[++++[>++++<-]<<]<<<[[>->>>++++++++++<<<<+]<[>->>>>+<<<<<+]<]>>[>]>[<+>>+>>+<<<-]>>>[-[>>+<<-]>>]<[<+>-]<[>++<-]<[<<]<<[>->>[>]+[<]<<-]->>>[>]<+[<-<]>+>[.>+++++++++[-[>>+<<-]>.>]++++++++++.[-]>]+[<<]<[,->>>---[<<<--->>>-],<-<<[<++>>>++<<---[<++[>-----<-]>>+>-<<[>--<----[>+<[-]]]]]>[<+>>++++++++++<-]>[-[>>+<<-]>>]++++[>--------<-]>[-[[<<]<[-]<[-]>>>>[-]]]+[>>]+[[-]<<]<<<<[[>>[<<->>-]>>+<<<<[+<<]>>>>]>>[<<]<<<<[+>>]>>>>[<<]>>[<<<<<<->>->>>>-]<<<]-[+<-]-<]>]>>-----[>+++<-]>-.----------.++++++.>---.[<<+>-->----]<-.+++++.----.<++.";
     char src[MAX_FILESIZE] = {};
 
     Machine machine;
+    int jump_table[MEMORY_SIZE] = {};
 
-    process(raw, src);
+    process(raw, src, jump_table);
 
-    const int exit_code = interpret(src, &machine);
+    std::cout << "Jump table:\n";
+
+    for (const int i : jump_table) {
+        std::cout << i << " ";
+    }
+
+    std::cout << "\n\n";
+
+    int exit_code = interpret(src, &machine, jump_table);
 
     std::cout << "\n\n";
 
@@ -29,10 +40,6 @@ int main() {
 
         case MEMORY_OUT_OF_BOUNDS:
             std::cout << "Attempted shift operation out of bounds at memory location " << machine.ptr_data << "\n";
-            break;
-
-        case UNMATCHED_BRACKET:
-            std::cout << "Unmatched bracket at instruction " << machine.ptr_instr << "\n";
             break;
 
         case UNKNOWN_INSTRUCTION:

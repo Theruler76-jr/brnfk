@@ -6,10 +6,7 @@
 #include "../header/header.h"
 
 
-int interpret(const char code[], Machine *machine) {
-
-    int stack[256] = {};
-    int ptr_stack = -1;
+int interpret(const char code[], Machine *machine, const int jump_table[]) {
 
     while (code[machine->ptr_instr] != '\0') {
 
@@ -27,7 +24,7 @@ int interpret(const char code[], Machine *machine) {
             machine->ptr_data--;
             break;
         case '>':
-            if (machine->ptr_data == 255) return MEMORY_OUT_OF_BOUNDS;
+            if (machine->ptr_data == MEMORY_SIZE) return MEMORY_OUT_OF_BOUNDS;
             machine->ptr_data++;
             break;
 
@@ -39,18 +36,12 @@ int interpret(const char code[], Machine *machine) {
             break;
 
         case '[':
-            ptr_stack++;
-            stack[ptr_stack] = machine->ptr_instr;
+            if (machine->memory[machine->ptr_data] == 0) {
+                machine->ptr_instr = jump_table[machine->ptr_instr];
+            }
             break;
         case ']':
-            if (ptr_stack == -1) return UNMATCHED_BRACKET;
-
-            if (machine->memory[machine->ptr_data] == 0) {
-                ptr_stack--;
-            } else {
-                machine->ptr_instr = stack[ptr_stack];
-            }
-
+            machine->ptr_instr = jump_table[machine->ptr_instr];
             break;
 
         default:

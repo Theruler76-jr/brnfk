@@ -1,6 +1,7 @@
 #pragma once
 
 #define MAX_FILESIZE 2048
+#define MEMORY_SIZE 1024 //4096 //16384
 
 enum exit_codes {
     EXECUTION_SUCCESS,
@@ -11,7 +12,7 @@ enum exit_codes {
 
 
 struct Machine {
-    unsigned char memory[256] = {};
+    unsigned char memory[MEMORY_SIZE] = {};
     int ptr_data = 0;
     int ptr_instr = 0;
 };
