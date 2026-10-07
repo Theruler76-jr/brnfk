@@ -9,40 +9,42 @@
 
 void interpret(const char code[], Machine *machine, const int jump_table[]) {
 
-    while (code[machine->ptr_instr] != '\0') {
+    while (code[machine->instr_ptr] != '\0') {
 
-        switch (code[machine->ptr_instr]) {
+        switch (code[machine->instr_ptr]) {
 
         case '+':
-            machine->memory[machine->ptr_data]++;
+            machine->memory[machine->data_ptr]++;
             break;
         case '-':
-            machine->memory[machine->ptr_data]--;
+            machine->memory[machine->data_ptr]--;
             break;
 
         case '<':
-            if (machine->ptr_data == 0) throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
-            machine->ptr_data--;
+            if (machine->data_ptr == 0) throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
+            machine->data_ptr--;
             break;
         case '>':
-            if (machine->ptr_data == MEMORY_SIZE) throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
-            machine->ptr_data++;
+            if (machine->data_ptr == MEMORY_SIZE) throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
+            machine->data_ptr++;
             break;
 
         case '.':
-            std::cout << machine->memory[machine->ptr_data];
+            std::cout << machine->memory[machine->data_ptr];
             break;
         case ',':
-            machine->memory[machine->ptr_data] = getch();
+            machine->memory[machine->data_ptr] = getch();
             break;
 
         case '[':
-            if (machine->memory[machine->ptr_data] == 0) {
-                machine->ptr_instr = jump_table[machine->ptr_instr];
+            if (machine->memory[machine->data_ptr] == 0) {
+                machine->instr_ptr = jump_table[machine->instr_ptr];
             }
             break;
         case ']':
-            machine->ptr_instr = jump_table[machine->ptr_instr];
+            if (machine->memory[machine->data_ptr] != 0) {
+                machine->instr_ptr = jump_table[machine->instr_ptr];
+            }
             break;
 
         default:
@@ -50,7 +52,7 @@ void interpret(const char code[], Machine *machine, const int jump_table[]) {
 
         }
 
-        machine->ptr_instr++;
+        machine->instr_ptr++;
 
     }
 }

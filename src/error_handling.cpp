@@ -14,11 +14,11 @@ void throw_interpreter(const int exit_code, const char src[], Machine *machine) 
         break;
 
     case MEMORY_OUT_OF_BOUNDS:
-        std::cout << "Attempted shift operation out of bounds at memory location " << machine->ptr_data << "\n";
+        std::cout << "Attempted shift operation out of bounds at memory location " << machine->data_ptr << "\n";
         break;
 
     case UNKNOWN_INSTRUCTION:
-        std::cout << "Unknown instruction " << src[machine->ptr_instr] << "\n";
+        std::cout << "Unknown instruction " << src[machine->instr_ptr] << "\n";
         break;
 
     default:

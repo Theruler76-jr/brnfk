@@ -14,6 +14,6 @@ enum exit_codes {
 
 struct Machine {
     unsigned char memory[MEMORY_SIZE] = {};
-    int ptr_data = 0;
-    int ptr_instr = 0;
+    int data_ptr = 0;
+    int instr_ptr = 0;
 };

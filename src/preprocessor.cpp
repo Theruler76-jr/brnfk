@@ -24,42 +24,42 @@ bool is_instruction(const char character) {
 
 
 void process(const char raw[], char src[], int jump_table[]) {
-    int ptr_raw = 0;
-    int ptr_src = 0;
+    int raw_ptr = 0;
+    int src_ptr = 0;
 
     int stack[MEMORY_SIZE] = {};
     int nesting = -1;
 
-    while (raw[ptr_raw] != '\0') {
+    while (raw[raw_ptr] != '\0') {
 
-        if (raw[ptr_raw] == '[') {
+        if (raw[raw_ptr] == '[') {
 
             nesting++;
-            stack[nesting] = ptr_src;
+            stack[nesting] = src_ptr;
 
-        } else if (raw[ptr_raw] == ']') {
+        } else if (raw[raw_ptr] == ']') {
             if (nesting == -1) {
-                throw_preprocessor(UNMATCHED_BRACKET, src, ptr_raw);
+                throw_preprocessor(UNMATCHED_BRACKET, src, raw_ptr);
             }
 
-            jump_table[ptr_src] = stack[nesting] - 1;
-            jump_table[stack[nesting]] = ptr_src;
+            jump_table[src_ptr] = stack[nesting] - 1;
+            jump_table[stack[nesting]] = src_ptr;
             nesting--;
 
         }
 
-        if (is_instruction(raw[ptr_raw])) {
-            src[ptr_src] = raw[ptr_raw];
-            ptr_src++;
+        if (is_instruction(raw[raw_ptr])) {
+            src[src_ptr] = raw[raw_ptr];
+            src_ptr++;
         }
 
-        ptr_raw++;
+        raw_ptr++;
 
     }
 
     if (nesting > -1) {
-        throw_preprocessor(UNMATCHED_BRACKET, src, ptr_raw);
+        throw_preprocessor(UNMATCHED_BRACKET, src, raw_ptr);
     }
 
-    src[ptr_src] = '\0';
+    src[src_ptr] = '\0';
 }
