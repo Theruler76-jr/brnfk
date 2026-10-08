@@ -3,9 +3,24 @@
 #include <iostream>
 
 
+void dump_status(Machine* machine) {
+    std::cout << "\n\n\n";
+    std::cout << "DEBUG INFORMATION:\n\n";
+    std::cout << "Instruction pointer: " << machine->instr_ptr << "\n";
+    std::cout << "Data pointer: " << machine->data_ptr << "\n";
+    std::cout << "\n";
+
+    std::cout << "Memory view:\n";
+
+    for (const int i : machine->memory) {
+        std::cout << i << " ";
+    }
+}
+
+
 void throw_interpreter(const int exit_code, const char src[], Machine *machine) {
 
-    std::cout << "ERROR: Interpreter exception:\n";
+    std::cout << "ERROR: Runtime exception:\n";
 
     switch (exit_code) {
 
@@ -25,7 +40,6 @@ void throw_interpreter(const int exit_code, const char src[], Machine *machine) 
         std::cout << "Unknown exit code " << exit_code << "\n";
 
     }
-
 }
 
 
@@ -47,5 +61,4 @@ void throw_preprocessor(const int exit_code, const char src[], int ptr) {
         std::cout << "Unknown exit code " << exit_code << "\n";
 
     }
-
 }

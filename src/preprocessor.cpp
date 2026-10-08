@@ -40,6 +40,7 @@ void process(const char raw[], char src[], int jump_table[]) {
         } else if (raw[raw_ptr] == ']') {
             if (nesting == -1) {
                 throw_preprocessor(UNMATCHED_BRACKET, src, raw_ptr);
+                return;
             }
 
             jump_table[src_ptr] = stack[nesting] - 1;
@@ -59,6 +60,7 @@ void process(const char raw[], char src[], int jump_table[]) {
 
     if (nesting > -1) {
         throw_preprocessor(UNMATCHED_BRACKET, src, raw_ptr);
+        return;
     }
 
     src[src_ptr] = '\0';

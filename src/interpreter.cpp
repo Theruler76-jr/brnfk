@@ -21,11 +21,17 @@ void interpret(const char code[], Machine *machine, const int jump_table[]) {
             break;
 
         case '<':
-            if (machine->data_ptr == 0) throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
+            if (machine->data_ptr == 0) {
+                throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
+                return;
+            }
             machine->data_ptr--;
             break;
         case '>':
-            if (machine->data_ptr == MEMORY_SIZE) throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
+            if (machine->data_ptr >= MEMORY_SIZE - 1) {
+                throw_interpreter(MEMORY_OUT_OF_BOUNDS, code, machine);
+                return;
+            }
             machine->data_ptr++;
             break;
 
@@ -48,11 +54,11 @@ void interpret(const char code[], Machine *machine, const int jump_table[]) {
             break;
 
         default:
-            throw_interpreter(UNKNOWN_INSTRUCTION, code, machine);;
+            throw_interpreter(UNKNOWN_INSTRUCTION, code, machine);
+            return;
 
         }
 
         machine->instr_ptr++;
-
     }
 }
