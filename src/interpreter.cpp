@@ -1,7 +1,10 @@
 #include "../header/interpreter.h"
 
 #include <iostream>
+
+# ifdef WIN32
 #include <conio.h>
+# endif
 
 #include "../header/header.h"
 #include "../header/error_handling.h"
@@ -39,7 +42,11 @@ void interpret(const char code[], Machine *machine, const int jump_table[]) {
             std::cout << machine->memory[machine->data_ptr];
             break;
         case ',':
+            #ifdef WIN32
             machine->memory[machine->data_ptr] = getch();
+            #else
+            machine->memory[machine->data_ptr] = getchar();
+            #endif
             break;
 
         case '[':

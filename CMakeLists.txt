@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 4.1)
 project(brnfk)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -static-libstdc++ -static-libgcc")
 
 add_executable(brnfk src/main.cpp
         src/header.cpp
